@@ -1,0 +1,20 @@
+<p><span></span>这几天准备用树莓派搭建一个mini服务器，但是在下载软件的时候发现root分区满了，不能装进软件，所以没办法只有想办法扩展分区。我用的16G的内存卡，我查看了一下root分区，结果才分3.4G，怪不得。</p>
+<p><span></span>话说更改分区有风险，(我不会告诉你我不小心就把分区给删了然后没有重建就重启了)重要数据请备份。</p>
+<p>首先使用fdisk进入分区管理</p>
+<p><span></span></p><pre><code class="language-ruby">sudo fdisk /dev/mmcblk0</code></pre>然后输入p查看分区,里面应该有两个分区或者更多，
+<p>第一个分区应该是系统分区，包含boot之类的吧，总之不要动它，动第二个分区。记住第二个分区的起始块数，我的是122880</p>
+<p><br /></p>
+<p>然后命令d删除除去第一分区的其他分区，</p>
+<p>d</p>
+<p>2</p>
+<p>依次类推</p>
+<p>然后命令n建立分区，命令q，建立主分区。</p>
+<p>然后输入分区号2，再输入你刚才记录的起始存储块数122880（初始存储块ID号），然后输入结束块数，一般默认就是能够分配的最大分区存储ID数。</p>
+<p><img src="https://img-blog.csdn.net/20150914210743467?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><br /></p>
+<p>然后就行了，命令P查看分区，现在应该出现新的分区了，然后w保存，重启。</p>
+<p><br /></p>
+<p>重启过后使用修护模式修护分区</p>
+<p></p><pre><code class="language-ruby">sudo resize2fs /dev/mmcblk0p2</code></pre><img src="https://img-blog.csdn.net/20150914210112534?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><p>然后df -h查看一下分区</p>
+<p><img src="https://img-blog.csdn.net/20150914210104028?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><br /></p>
+<p><br />
+ok，大功告成！</p>
